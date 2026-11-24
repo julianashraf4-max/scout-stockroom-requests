@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Roles live in `public.user_roles` (admin/keeper/member); first signup becomes admin via `handle_new_user` trigger. Why: avoid privilege escalation and bootstrap an owner.
+- Request approval goes through the `decide_request` SQL function so stock decrement and status change are atomic and staff-only.
