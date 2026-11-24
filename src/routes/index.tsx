@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Tent, PackageCheck, ShieldCheck, Users } from "lucide-react";
+import { PackageCheck, ShieldCheck, Users } from "lucide-react";
+import { usePrefs } from "@/lib/prefs";
+import { Logo } from "@/components/store/Logo";
+import { PrefsToggles } from "@/components/store/PrefsToggles";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
@@ -17,21 +20,23 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { t } = usePrefs();
   const features = [
-    { icon: ShieldCheck, t: "المسؤول", d: "يتحكم في كل حاجة ويحدد أدوار الأفراد" },
-    { icon: PackageCheck, t: "أمين المخزن", d: "يضيف الأصناف ويوافق على الطلبات" },
-    { icon: Users, t: "العضو", d: "يشوف المتاح ويطلب اللي محتاجه" },
+    { icon: ShieldCheck, t: t("roleAdmin"), d: t("roleAdminD") },
+    { icon: PackageCheck, t: t("roleKeeper"), d: t("roleKeeperD") },
+    { icon: Users, t: t("roleMember"), d: t("roleMemberD") },
   ];
   return (
     <main className="min-h-screen bg-hero text-primary-foreground">
-      <div className="mx-auto flex max-w-4xl flex-col items-center px-6 py-20 text-center">
+      <div className="flex justify-end p-3"><PrefsToggles /></div>
+      <div className="mx-auto flex max-w-4xl flex-col items-center px-6 py-10 text-center">
         <div className="mb-6 rounded-full bg-accent p-4 text-accent-foreground shadow-soft">
-          <Tent className="h-10 w-10" />
+          <Logo className="h-12 w-12" />
         </div>
-        <h1 className="font-display text-5xl font-bold md:text-6xl">مخزن الكشافة</h1>
-        <p className="mt-4 max-w-md text-lg opacity-90">كل عهدة المخزن في مكان واحد — مين أخد إيه، وإيه المتاح.</p>
+        <h1 className="font-display text-5xl font-bold md:text-6xl">{t("appName")}</h1>
+        <p className="mt-4 max-w-md text-lg opacity-90">{t("tagline")}</p>
         <Button asChild size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
-          <Link to="/dashboard">ادخل المخزن</Link>
+          <Link to="/dashboard">{t("enter")}</Link>
         </Button>
         <div className="mt-16 grid w-full gap-4 md:grid-cols-3">
           {features.map((f) => (

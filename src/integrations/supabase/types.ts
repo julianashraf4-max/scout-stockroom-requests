@@ -14,12 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      duty_shifts: {
+        Row: {
+          created_at: string
+          duty_date: string
+          end_time: string | null
+          id: string
+          leader_id: string
+          notes: string | null
+          start_time: string | null
+        }
+        Insert: {
+          created_at?: string
+          duty_date: string
+          end_time?: string | null
+          id?: string
+          leader_id: string
+          notes?: string | null
+          start_time?: string | null
+        }
+        Update: {
+          created_at?: string
+          duty_date?: string
+          end_time?: string | null
+          id?: string
+          leader_id?: string
+          notes?: string | null
+          start_time?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "duty_shifts_leader_id_fkey"
+            columns: ["leader_id"]
+            isOneToOne: false
+            referencedRelation: "leaders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       items: {
         Row: {
           category: string
           created_at: string
           created_by: string | null
           id: string
+          image_url: string | null
           name: string
           notes: string | null
           quantity: number
@@ -31,6 +70,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          image_url?: string | null
           name: string
           notes?: string | null
           quantity?: number
@@ -42,11 +82,72 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          image_url?: string | null
           name?: string
           notes?: string | null
           quantity?: number
           unit?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      leaders: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          is_current: boolean
+          name: string
+          phone: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_current?: boolean
+          name: string
+          phone?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_current?: boolean
+          name?: string
+          phone?: string | null
+          title?: string | null
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          price: number
+          stock: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price?: number
+          stock?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number
+          stock?: number
         }
         Relationships: []
       }
@@ -115,6 +216,59 @@ export type Database = {
           },
         ]
       }
+      shop_orders: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          quantity: number
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          quantity: number
+          status?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          quantity?: number
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_settings: {
+        Row: {
+          id: number
+          logo_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          logo_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          logo_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -138,6 +292,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      decide_order: {
+        Args: { _complete: boolean; _order_id: string }
+        Returns: undefined
+      }
       decide_request: {
         Args: { _approve: boolean; _request_id: string }
         Returns: undefined
