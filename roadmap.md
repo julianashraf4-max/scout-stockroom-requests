@@ -7,3 +7,4 @@
 - [x] Home-page store and shop count cards
 - [x] Block requests and approvals when stock is insufficient
 - [x] Admin-managed single-use invitation codes required for signup
+- [ ] Invitation codes assign admin, keeper, or member roles

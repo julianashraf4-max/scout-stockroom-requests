@@ -1,8 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { Copy, Plus, Ticket, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { usePrefs } from "@/lib/prefs";
+import { inviteRoles } from "@/lib/invites";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -11,6 +13,7 @@ import { type Role, roleKey, topRole } from "./roles";
 export function UsersTab({ meId }: { meId: string }) {
   const { t } = usePrefs();
   const qc = useQueryClient();
+  const [inviteRole, setInviteRole] = useState<Role>("member");
   const users = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
@@ -36,7 +39,7 @@ export function UsersTab({ meId }: { meId: string }) {
   }
 
   async function createInvite() {
-    const { error } = await supabase.rpc("create_invite_code", { _max_uses: 1 });
+    const { error } = await supabase.rpc("create_role_invite_code", { _role: inviteRole });
     if (error) { toast.error(error.message); return; }
     toast.success(t("inviteCreated"));
     qc.invalidateQueries({ queryKey: ["invitation-codes"] });
@@ -62,7 +65,15 @@ export function UsersTab({ meId }: { meId: string }) {
             <h2 className="flex items-center gap-2 font-display text-xl font-bold"><Ticket className="h-5 w-5" />{t("invites")}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{t("invitesHint")}</p>
           </div>
-          <Button className="gap-1" onClick={createInvite}><Plus className="h-4 w-4" />{t("newInvite")}</Button>
+          <div className="flex items-center gap-2">
+            <Select value={inviteRole} onValueChange={(v) => setInviteRole(v as Role)}>
+              <SelectTrigger className="w-36" aria-label={t("inviteRole")}><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {inviteRoles.map((role) => <SelectItem key={role} value={role}>{t(roleKey[role])}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <Button className="gap-1" onClick={createInvite}><Plus className="h-4 w-4" />{t("newInvite")}</Button>
+          </div>
         </div>
         <div className="mt-4 space-y-2">
           {(invites.data ?? []).map((invite) => {
@@ -70,6 +81,7 @@ export function UsersTab({ meId }: { meId: string }) {
             return (
               <div key={invite.code} className="flex flex-wrap items-center gap-2 rounded-lg border p-3">
                 <code dir="ltr" className="flex-1 font-mono text-lg font-bold tracking-widest">{invite.code}</code>
+                <Badge variant="outline">{t(roleKey[invite.role])}</Badge>
                 <Badge variant={used ? "secondary" : "default"}>{used ? t("used") : t("active")}</Badge>
                 <Button size="icon" variant="outline" aria-label={t("copyCode")} onClick={() => copyCode(invite.code)}><Copy className="h-4 w-4" /></Button>
                 <Button size="icon" variant="ghost" aria-label={t("del")} onClick={() => deleteInvite(invite.code)}><Trash2 className="h-4 w-4" /></Button>

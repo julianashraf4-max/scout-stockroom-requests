@@ -31,4 +31,4 @@ use the editor.
 
 - Roles live in `public.user_roles` (admin/keeper/member); first signup becomes admin via `handle_new_user` trigger. Why: avoid privilege escalation and bootstrap an owner.
 - Request approval goes through the `decide_request` SQL function so stock decrement and status change are atomic and staff-only.
-- Invitation-code consumption is enforced inside the `handle_new_user` trigger, not only in the signup UI. Why: every signup path must require a valid unused code and consume it atomically.
+- Invitation-code consumption and invited-role assignment are enforced inside the `handle_new_user` trigger, not only in the signup UI. Why: every signup path must require a valid unused code, consume it atomically, and grant only its assigned role.

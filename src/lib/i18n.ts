@@ -25,8 +25,8 @@ const ar = {
   logo: "لوجو الموقع", logoSaved: "اللوجو اتحفظ", soldOut: "خلص",
   dark: "الوضع الغامق", light: "الوضع الفاتح", language: "English",
   homeStoreCount: "صنف في المخزن", homeShopCount: "منتج في المتجر",
-  inviteCode: "كود الدعوة", inviteCodeHint: "لازم تاخد كود دعوة من المسؤول عشان تعمل حساب", invalidInvite: "كود الدعوة غلط أو اتستخدم قبل كده",
-  invites: "أكواد الدعوة", invitesHint: "كل كود يعمل حساب واحد وبعدين يقفل تلقائيًا", newInvite: "كود جديد", inviteCreated: "الكود اتعمل",
+  inviteCode: "كود الدعوة", inviteCodeHint: "لازم تاخد كود دعوة من المسؤول، وهو هيحدد دورك تلقائيًا", invalidInvite: "كود الدعوة غلط أو اتستخدم قبل كده",
+  invites: "أكواد الدعوة", invitesHint: "اختار دور الحساب؛ كل كود يعمل حساب واحد وبعدين يقفل تلقائيًا", inviteRole: "دور الحساب", newInvite: "كود جديد", inviteCreated: "الكود اتعمل",
   copyCode: "نسخ الكود", copied: "اتنسخ", used: "اتستخدم", active: "متاح", notEnoughStock: "الكمية المطلوبة مش متاحة",
 };
 export type Key = keyof typeof ar;
@@ -57,8 +57,8 @@ const en: Record<Key, string> = {
   logo: "Site logo", logoSaved: "Logo saved", soldOut: "Sold out",
   dark: "Dark mode", light: "Light mode", language: "العربية",
   homeStoreCount: "items in the store", homeShopCount: "products in the shop",
-  inviteCode: "Invitation code", inviteCodeHint: "Ask an admin for an invitation code to create an account", invalidInvite: "Invalid or already used invitation code",
-  invites: "Invitation codes", invitesHint: "Each code creates one account, then closes automatically", newInvite: "New code", inviteCreated: "Code created",
+  inviteCode: "Invitation code", inviteCodeHint: "Ask an admin for an invitation code; it assigns your role automatically", invalidInvite: "Invalid or already used invitation code",
+  invites: "Invitation codes", invitesHint: "Choose the account role; each code creates one account, then closes automatically", inviteRole: "Account role", newInvite: "New code", inviteCreated: "Code created",
   copyCode: "Copy code", copied: "Copied", used: "Used", active: "Available", notEnoughStock: "The requested quantity is not available",
 };
 export const dict = { ar, en };

@@ -58,6 +58,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           max_uses: number
+          role: Database["public"]["Enums"]["app_role"]
           used_count: number
         }
         Insert: {
@@ -65,6 +66,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           max_uses?: number
+          role?: Database["public"]["Enums"]["app_role"]
           used_count?: number
         }
         Update: {
@@ -72,6 +74,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           max_uses?: number
+          role?: Database["public"]["Enums"]["app_role"]
           used_count?: number
         }
         Relationships: [
@@ -325,6 +328,10 @@ export type Database = {
     }
     Functions: {
       create_invite_code: { Args: { _max_uses?: number }; Returns: string }
+      create_role_invite_code: {
+        Args: { _role: Database["public"]["Enums"]["app_role"] }
+        Returns: string
+      }
       decide_order: {
         Args: { _complete: boolean; _order_id: string }
         Returns: undefined

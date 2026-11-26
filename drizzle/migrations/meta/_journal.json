@@ -36,6 +36,13 @@
       "when": 1795707245958,
       "tag": "0004_single_use_invitation_codes",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795707664132,
+      "tag": "0005_migration",
+      "breakpoints": true
     }
   ]
 }
