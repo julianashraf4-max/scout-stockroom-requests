@@ -22,6 +22,20 @@
       "when": 1795537216421,
       "tag": "0002_media_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795707233247,
+      "tag": "0003_invite_codes_counts_and_stock_validation",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795707245958,
+      "tag": "0004_single_use_invitation_codes",
+      "breakpoints": true
     }
   ]
 }

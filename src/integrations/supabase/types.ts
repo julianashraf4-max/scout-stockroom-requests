@@ -52,6 +52,38 @@ export type Database = {
           },
         ]
       }
+      invitation_codes: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          max_uses: number
+          used_count: number
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          max_uses?: number
+          used_count?: number
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          max_uses?: number
+          used_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invitation_codes_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       items: {
         Row: {
           category: string
@@ -292,6 +324,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_invite_code: { Args: { _max_uses?: number }; Returns: string }
       decide_order: {
         Args: { _complete: boolean; _order_id: string }
         Returns: undefined
@@ -299,6 +332,13 @@ export type Database = {
       decide_request: {
         Args: { _approve: boolean; _request_id: string }
         Returns: undefined
+      }
+      get_public_counts: {
+        Args: never
+        Returns: {
+          items_count: number
+          products_count: number
+        }[]
       }
       has_role: {
         Args: {
@@ -308,6 +348,7 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      validate_invite_code: { Args: { _code: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "keeper" | "member"

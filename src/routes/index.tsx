@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PackageCheck, ShieldCheck, Users } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Package, PackageCheck, ShieldCheck, ShoppingBag, Users } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { usePrefs } from "@/lib/prefs";
 import { Logo } from "@/components/store/Logo";
 import { PrefsToggles } from "@/components/store/PrefsToggles";
@@ -21,6 +23,14 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { t } = usePrefs();
+  const counts = useQuery({
+    queryKey: ["public-counts"],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("get_public_counts");
+      if (error) throw error;
+      return data[0] ?? { items_count: 0, products_count: 0 };
+    },
+  });
   const features = [
     { icon: ShieldCheck, t: t("roleAdmin"), d: t("roleAdminD") },
     { icon: PackageCheck, t: t("roleKeeper"), d: t("roleKeeperD") },
@@ -38,7 +48,19 @@ function Index() {
         <Button asChild size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
           <Link to="/dashboard">{t("enter")}</Link>
         </Button>
-        <div className="mt-16 grid w-full gap-4 md:grid-cols-3">
+        <div className="mt-10 grid w-full gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl bg-card p-6 text-card-foreground shadow-soft">
+            <Package className="mx-auto mb-2 h-8 w-8 text-primary" />
+            <p className="font-display text-4xl font-bold">{counts.data ? counts.data.items_count : "—"}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t("homeStoreCount")}</p>
+          </div>
+          <div className="rounded-2xl bg-card p-6 text-card-foreground shadow-soft">
+            <ShoppingBag className="mx-auto mb-2 h-8 w-8 text-primary" />
+            <p className="font-display text-4xl font-bold">{counts.data ? counts.data.products_count : "—"}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t("homeShopCount")}</p>
+          </div>
+        </div>
+        <div className="mt-10 grid w-full gap-4 md:grid-cols-3">
           {features.map((f) => (
             <div key={f.t} className="rounded-xl bg-card p-6 text-card-foreground shadow-soft">
               <f.icon className="mx-auto mb-3 h-7 w-7 text-primary" />

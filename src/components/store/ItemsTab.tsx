@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { MediaImage, ImagePicker } from "./MediaImage";
+import { isQuantityAvailable } from "@/lib/stock";
 
 type Item = { id: string; name: string; category: string; quantity: number; unit: string; notes: string | null; image_url: string | null };
 const empty = { name: "", category: "", quantity: 1, unit: "", notes: "", image_url: null as string | null };
@@ -120,9 +121,10 @@ function RequestDialog({ item, onClose }: { item: Item; onClose: () => void }) {
   const [note, setNote] = useState("");
   async function send(e: React.FormEvent) {
     e.preventDefault();
+    if (!isQuantityAvailable(item.quantity, qty)) { toast.error(t("notEnoughStock")); return; }
     const { data: u } = await supabase.auth.getUser();
     const { error } = await supabase.from("requests").insert({ item_id: item.id, quantity: qty, note: note || null, user_id: u.user!.id });
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(error.message.includes("NOT_ENOUGH_STOCK") ? t("notEnoughStock") : error.message); return; }
     toast.success(t("requestSent"));
     qc.invalidateQueries({ queryKey: ["requests"] });
     onClose();
@@ -132,9 +134,10 @@ function RequestDialog({ item, onClose }: { item: Item; onClose: () => void }) {
       <DialogContent>
         <DialogHeader><DialogTitle>{t("requestOf")} {item.name}</DialogTitle></DialogHeader>
         <form onSubmit={send} className="space-y-3">
-          <div className="space-y-1"><Label>{t("quantity")} ({item.quantity} {t("available")})</Label><Input type="number" min={1} max={item.quantity} value={qty} onChange={(e) => setQty(Number(e.target.value))} /></div>
+          <div className="space-y-1"><Label>{t("quantity")} ({item.quantity} {t("available")})</Label><Input type="number" min={1} max={item.quantity} step={1} value={qty} onChange={(e) => setQty(Number(e.target.value))} /></div>
+          {!isQuantityAvailable(item.quantity, qty) && <p className="text-sm text-destructive">{t("notEnoughStock")}</p>}
           <div className="space-y-1"><Label>{t("reason")}</Label><Input value={note} onChange={(e) => setNote(e.target.value)} /></div>
-          <Button type="submit" className="w-full">{t("sendRequest")}</Button>
+          <Button type="submit" className="w-full" disabled={!isQuantityAvailable(item.quantity, qty)}>{t("sendRequest")}</Button>
         </form>
       </DialogContent>
     </Dialog>
