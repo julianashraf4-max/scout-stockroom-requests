@@ -215,7 +215,13 @@ export type Database = {
           id: string
           item_id: string
           note: string | null
+          picked_up_at: string | null
+          pickup_date: string | null
+          pickup_note: string | null
           quantity: number
+          return_date: string | null
+          return_note: string | null
+          returned_at: string | null
           status: string
           user_id: string
         }
@@ -226,7 +232,13 @@ export type Database = {
           id?: string
           item_id: string
           note?: string | null
+          picked_up_at?: string | null
+          pickup_date?: string | null
+          pickup_note?: string | null
           quantity: number
+          return_date?: string | null
+          return_note?: string | null
+          returned_at?: string | null
           status?: string
           user_id?: string
         }
@@ -237,7 +249,13 @@ export type Database = {
           id?: string
           item_id?: string
           note?: string | null
+          picked_up_at?: string | null
+          pickup_date?: string | null
+          pickup_note?: string | null
           quantity?: number
+          return_date?: string | null
+          return_note?: string | null
+          returned_at?: string | null
           status?: string
           user_id?: string
         }
@@ -327,6 +345,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      advance_request: {
+        Args: { _action: string; _note?: string; _request_id: string }
+        Returns: undefined
+      }
       create_invite_code: { Args: { _max_uses?: number }; Returns: string }
       create_role_invite_code: {
         Args: { _role: Database["public"]["Enums"]["app_role"] }
