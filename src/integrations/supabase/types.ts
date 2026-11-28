@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      administrative_notes: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          note: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          note: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          note?: string
+        }
+        Relationships: []
+      }
+      cart_items: {
+        Row: {
+          product_id: string
+          quantity: number
+          user_id: string
+        }
+        Insert: {
+          product_id: string
+          quantity: number
+          user_id?: string
+        }
+        Update: {
+          product_id?: string
+          quantity?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       duty_shifts: {
         Row: {
           created_at: string
@@ -207,22 +254,57 @@ export type Database = {
         }
         Relationships: []
       }
-      requests: {
+      purchase_order_lines: {
+        Row: {
+          id: string
+          order_id: string
+          product_id: string
+          product_name: string
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          product_id: string
+          product_name: string
+          quantity: number
+          unit_price: number
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          product_id?: string
+          product_name?: string
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchase_order_lines_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "purchase_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_order_lines_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      purchase_orders: {
         Row: {
           created_at: string
           decided_at: string | null
           decided_by: string | null
           id: string
-          item_id: string
           note: string | null
-          picked_up_at: string | null
-          pickup_date: string | null
-          pickup_note: string | null
-          quantity: number
-          return_date: string | null
-          return_note: string | null
-          returned_at: string | null
           status: string
+          total: number
           user_id: string
         }
         Insert: {
@@ -230,16 +312,9 @@ export type Database = {
           decided_at?: string | null
           decided_by?: string | null
           id?: string
-          item_id: string
           note?: string | null
-          picked_up_at?: string | null
-          pickup_date?: string | null
-          pickup_note?: string | null
-          quantity: number
-          return_date?: string | null
-          return_note?: string | null
-          returned_at?: string | null
           status?: string
+          total?: number
           user_id?: string
         }
         Update: {
@@ -247,15 +322,74 @@ export type Database = {
           decided_at?: string | null
           decided_by?: string | null
           id?: string
+          note?: string | null
+          status?: string
+          total?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      requests: {
+        Row: {
+          borrower_name: string | null
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          due_at: string | null
+          id: string
+          item_id: string
+          note: string | null
+          picked_up_at: string | null
+          pickup_at: string | null
+          pickup_date: string | null
+          pickup_note: string | null
+          quantity: number
+          return_date: string | null
+          return_note: string | null
+          returned_at: string | null
+          source: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          borrower_name?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          due_at?: string | null
+          id?: string
+          item_id: string
+          note?: string | null
+          picked_up_at?: string | null
+          pickup_at?: string | null
+          pickup_date?: string | null
+          pickup_note?: string | null
+          quantity: number
+          return_date?: string | null
+          return_note?: string | null
+          returned_at?: string | null
+          source?: string
+          status?: string
+          user_id?: string
+        }
+        Update: {
+          borrower_name?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          due_at?: string | null
+          id?: string
           item_id?: string
           note?: string | null
           picked_up_at?: string | null
+          pickup_at?: string | null
           pickup_date?: string | null
           pickup_note?: string | null
           quantity?: number
           return_date?: string | null
           return_note?: string | null
           returned_at?: string | null
+          source?: string
           status?: string
           user_id?: string
         }
@@ -265,6 +399,41 @@ export type Database = {
             columns: ["item_id"]
             isOneToOne: false
             referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reservation_events: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string
+          id: string
+          note: string | null
+          request_id: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          request_id: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservation_events_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
             referencedColumns: ["id"]
           },
         ]
@@ -345,10 +514,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      adjust_equipment: {
+        Args: { _delta: number; _item: string }
+        Returns: undefined
+      }
       advance_request: {
         Args: { _action: string; _note?: string; _request_id: string }
         Returns: undefined
       }
+      booking_available: {
+        Args: { _end: string; _exclude?: string; _item: string; _start: string }
+        Returns: number
+      }
+      checkout_cart: { Args: { _note?: string }; Returns: string }
       create_invite_code: { Args: { _max_uses?: number }; Returns: string }
       create_role_invite_code: {
         Args: { _role: Database["public"]["Enums"]["app_role"] }
@@ -356,6 +534,10 @@ export type Database = {
       }
       decide_order: {
         Args: { _complete: boolean; _order_id: string }
+        Returns: undefined
+      }
+      decide_purchase: {
+        Args: { _complete: boolean; _note?: string; _order: string }
         Returns: undefined
       }
       decide_request: {
@@ -377,6 +559,36 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      issue_external: {
+        Args: {
+          _borrower: string
+          _due: string
+          _item: string
+          _note: string
+          _quantity: number
+        }
+        Returns: string
+      }
+      product_available: { Args: { _product: string }; Returns: number }
+      shared_booking_schedule: {
+        Args: never
+        Returns: {
+          due_at: string
+          id: string
+          item_name: string
+          pickup_at: string
+          quantity: number
+          source: string
+          status: string
+        }[]
+      }
+      shop_availability: {
+        Args: never
+        Returns: {
+          available: number
+          product_id: string
+        }[]
+      }
       validate_invite_code: { Args: { _code: string }; Returns: boolean }
     }
     Enums: {

@@ -7,4 +7,10 @@
 - [x] Home-page store and shop count cards
 - [x] Block requests and approvals when stock is insufficient
 - [x] Admin-managed single-use invitation codes required for signup
-- [ ] Invitation codes assign admin, keeper, or member roles
+- [ ] Verify invitation-code role assignment
+- [ ] Store cart, grouped cash orders, tracking and existing product management
+- [ ] 24-hour warehouse bookings, atomic overlap/stock checks and pickup/return inventory
+- [ ] Reservation lifecycle, shared calendars, overdue and outside-website issue notes
+- [ ] Signed-in overview with inventory, orders, reservation totals and staff notes
+- [ ] Verify real-user workflows and cross-device refresh
+- [ ] Block Store ordering and collection on Fridays; Warehouse unrestricted

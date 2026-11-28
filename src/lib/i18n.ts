@@ -1,4 +1,5 @@
 const ar = {
+  overview: "الرئيسية", calendar: "مواعيد الاستلام والإرجاع", all: "الكل", picked_up: "تم الاستلام", returned: "تم الإرجاع", pickup: "تسجيل الاستلام", return: "تسجيل الإرجاع", overdue: "متأخر", outstanding: "معدات لم ترجع", onHand: "موجود بالمخزن", inventoryTotal: "إجمالي المعدات", reservationStatus: "حالات الحجز", cart: "السلة", addToCart: "أضف للسلة", checkout: "إنشاء طلب شراء", emptyCart: "السلة فارغة", fridayClosed: "المتجر مغلق للطلبات والاستلام يوم الجمعة", advance24: "الحجز قبل الاستلام بـ٢٤ ساعة على الأقل، والإرجاع بعد الاستلام", pickupNotDue: "موعد الاستلام لم يحن بعد", externalIssue: "صرف خارج الموقع", borrower: "اسم المستلم", administrativeNotes: "ملاحظات المسؤولين", addNote: "إضافة ملاحظة", history: "سجل العملية", saved: "اتحفظ", loadError: "تعذر تحميل البيانات", retry: "إعادة المحاولة", availableForDates: "المتاح في المواعيد المختارة", noEvents: "لا توجد مواعيد في هذا اليوم", reserved: "محجوز", usersCount: "الأفراد", imageCount: "الصور", shiftsCount: "مواعيد العاملين", cash: "الدفع كاش عند الاستلام", orderNumber: "رقم الطلب", view: "عرض", newOrders: "طلبات جديدة", noteRequired: "اسم المستلم والملاحظة مطلوبان", bookingConflict: "الكمية غير متاحة في هذه المواعيد", physicalStock: "الكمية الموجودة فعليًا", external: "خارج الموقع", website: "حجز من الموقع",
   appName: "مخزن الكشافة",
   tagline: "كل عهدة المخزن في مكان واحد — مين أخد إيه، وإيه المتاح.",
   enter: "ادخل المخزن",
@@ -33,6 +34,7 @@ const ar = {
 };
 export type Key = keyof typeof ar;
 const en: Record<Key, string> = {
+  overview: "Overview", calendar: "Pickup & return calendar", all: "All", picked_up: "Picked up", returned: "Returned", pickup: "Mark picked up", return: "Mark returned", overdue: "Overdue", outstanding: "Outstanding equipment", onHand: "On hand", inventoryTotal: "Total equipment", reservationStatus: "Reservation statuses", cart: "Cart", addToCart: "Add to cart", checkout: "Create purchase order", emptyCart: "Your cart is empty", fridayClosed: "Store orders and collections are closed on Fridays", advance24: "Book at least 24 hours before pickup; return must be later than pickup", pickupNotDue: "Pickup time has not arrived", externalIssue: "Issue outside website", borrower: "Recipient name", administrativeNotes: "Administrative notes", addNote: "Add note", history: "Activity log", saved: "Saved", loadError: "Could not load data", retry: "Retry", availableForDates: "Available for selected dates", noEvents: "No events on this day", reserved: "Reserved", usersCount: "People", imageCount: "Images", shiftsCount: "Staff shifts", cash: "Pay cash on collection", orderNumber: "Order number", view: "View", newOrders: "New orders", noteRequired: "Recipient name and note are required", bookingConflict: "Quantity is unavailable for these dates", physicalStock: "Physical stock on hand", external: "Outside website", website: "Website booking",
   appName: "Scout Store",
   tagline: "All your store gear in one place — who took what, and what's available.",
   enter: "Enter the store",
@@ -45,7 +47,7 @@ const en: Record<Key, string> = {
   toSignUp: "No account? Create one", toSignIn: "Have an account? Sign in",
   badLogin: "Wrong email or password", checkEmail: "We sent you a confirmation email. Open it, then sign in.", googleFail: "Google sign-in failed",
   loading: "Loading…", logout: "Sign out",
-  tabStore: "Store", tabRequests: "Requests", tabMyRequests: "My requests", tabUsers: "People", tabLeaders: "Leaders", tabShop: "Shop", tabSettings: "Settings",
+  tabStore: "Warehouse", tabRequests: "Requests", tabMyRequests: "My requests", tabUsers: "People", tabLeaders: "Leaders", tabShop: "Shop", tabSettings: "Settings",
   search: "Search…", newItem: "New item", addItem: "Add item", category: "Category", unit: "Unit", quantity: "Quantity", notes: "Notes",
   save: "Save", noItems: "Nothing here yet", added: "Added", request: "Request", requestOf: "Request", available: "available",
   reason: "Reason / note", sendRequest: "Send request", requestSent: "Request sent",
